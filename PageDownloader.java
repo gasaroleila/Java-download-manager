@@ -15,6 +15,7 @@ public class PageDownloader {
             String line = null;
             while ((line = reader.readLine())!=null) {
                 writer.write(line);
+                System.out.println(line);
 
             }
 
