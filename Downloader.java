@@ -13,6 +13,8 @@ public class Downloader {
 
         try {
             URLConnection connection = link.openConnection();
+            int size = connection.getContentLength();
+//            double percCount = 0.0;
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             File file = new File("./site.html");
@@ -21,9 +23,13 @@ public class Downloader {
             String line = null;
             while ((line = reader.readLine())!=null) {
                 writer.write(line);
+//                percCount += line.getBytes();
+//                if (size > 0) {
+//                    System.out.println("Percentace: " + (percCount / size * 100.0) + "%");
+//                }
             }
 
-            Vector<URL> listOfURLs = new DownloadAndFillVector().extractLinks(file);
+            Vector<URL> listOfURLs = new DownloadAndFillVector().extractLinks(file,link);
             int sizeOfUrls = listOfURLs.size();
 
             for(int i=0; i<sizeOfUrls; i++) {
@@ -39,7 +45,7 @@ public class Downloader {
                 }
             }
         }catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Site couldn't be downloaded fully!!");
         }
 
     }

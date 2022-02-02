@@ -12,7 +12,7 @@ public class DownloadAndFillVector {
     public DownloadAndFillVector() {
 
     }
-    public Vector<URL> extractLinks(File siteFile) throws IOException {
+    public Vector<URL> extractLinks(File siteFile, URL siteLink) throws IOException {
         Vector<URL> listOfURLs = new Vector<URL>();
 //        File f = new File("C:/Users/uwamg/Desktop/site.html");
 
@@ -23,15 +23,11 @@ public class DownloadAndFillVector {
                 doc = Jsoup.parse(siteFile, null, "");
 //            Elements elements = (Elements) doc.select("a");
                 for (Element element : doc.select("a")) {
-                    // Do something with your links here ...
-                    if(element.attr("href").contains("https")|| element.attr("href").contains("http")) {
-//                        System.out.println("link");
-                        listOfURLs.add((new URL(element.attr("href"))));
-//                        System.out.println(element.attr("href"));
+                    String link = element.attr("href");
+                    if(!link.contains("#") && !link.contains("./") && !link.contains("https") && !link.contains("http")) {
+                        link = siteLink+link;
+                        listOfURLs.add((new URL(link)));
                     }
-//                    else {
-//                        System.out.println("not url");
-//                    }
                 }
 
                 for (URL listOfURL : listOfURLs) {
@@ -39,7 +35,7 @@ public class DownloadAndFillVector {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Site couldn't be downloaded!!");
             }
         }
 
